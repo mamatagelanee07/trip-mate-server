@@ -1,0 +1,1 @@
+rootProject.name = "com.andigeeky.tripmate.trip-mate-server"
