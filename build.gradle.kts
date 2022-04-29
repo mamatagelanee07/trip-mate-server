@@ -8,7 +8,7 @@ val kotlinx_datetime_version: String by project
 
 plugins {
     application
-    kotlin("jvm") version "1.6.10" //TODO use variable kotlin_version if possible
+    kotlin("jvm") version "1.6.21" //TODO use variable kotlin_version if possible
     kotlin("plugin.serialization") version "1.6.10"
 }
 
@@ -40,4 +40,9 @@ dependencies {
 
 tasks {
     create("stage").dependsOn("installDist")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
