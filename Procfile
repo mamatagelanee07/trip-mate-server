@@ -1,1 +1,1 @@
-web: ./build/install/trip-mate-server/bin/trip-mate-server
+web: ./build/install/com.andigeeky.tripmate.trip-mate-server/bin/com.andigeeky.tripmate.trip-mate-server
