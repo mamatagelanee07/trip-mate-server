@@ -1,0 +1,1 @@
+web: ./build/install/trip-mate-server/bin/trip-mate-server
