@@ -31,7 +31,7 @@ fun Route.tripRouting() {
                 tripStorage.add(trip)
                 call.respondText("Trip Created", status = HttpStatusCode.Created)
             } catch (exception: Exception) {
-                call.respondText(status = this.context.response.status(), text = "${exception.message}")
+                call.respondText(text = "${exception.message}")
             }
         }
         delete("{id}") {
