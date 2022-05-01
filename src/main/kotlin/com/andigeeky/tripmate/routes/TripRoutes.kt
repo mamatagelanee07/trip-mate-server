@@ -26,9 +26,13 @@ fun Route.tripRouting() {
             } ?: call.respondText("Missing or malformed id", status = HttpStatusCode.BadRequest)
         }
         post {
-            val trip = call.receive<Trip>()
-            tripStorage.add(trip)
-            call.respondText("Trip Created", status = HttpStatusCode.Created)
+            try {
+                val trip = call.receive<Trip>()
+                tripStorage.add(trip)
+                call.respondText("Trip Created", status = HttpStatusCode.Created)
+            } catch (exception: Exception) {
+                call.respondText(status = this.context.response.status(), text = "${exception.message}")
+            }
         }
         delete("{id}") {
             val id = call.request.queryParameters["id"]
