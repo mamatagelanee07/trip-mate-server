@@ -31,15 +31,14 @@ fun Route.tripRouting() {
         post {
             errorAware {
                 val input = call.receive<TripInput>()
-                tripStorage.add(
-                    Trip(
-                        id = Random().nextInt().toString(),
-                        name = input.name,
-                        startDate = input.startDate,
-                        endDate = input.endDate
-                    )
+                val trip = Trip(
+                    id = Random().nextInt().toString(),
+                    name = input.name,
+                    startDate = input.startDate,
+                    endDate = input.endDate
                 )
-                call.respondText("Trip Created", status = HttpStatusCode.Created)
+                tripStorage.add(trip)
+                call.respond(status = HttpStatusCode.Created, message = trip)
             }
         }
         delete("{id}") {
