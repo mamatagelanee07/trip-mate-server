@@ -6,12 +6,15 @@ import io.ktor.server.application.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.callloging.*
 import io.ktor.server.plugins.contentnegotiation.*
+import kotlinx.serialization.json.Json
 
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 fun Application.module() {
     install(ContentNegotiation) {
-        json()
+        json(json = Json {
+            isLenient = true
+        })
     }
     install(CallLogging)
     registerRoutes()
