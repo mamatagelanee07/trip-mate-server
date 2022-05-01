@@ -1,12 +1,14 @@
 package com.andigeeky.tripmate.routes
 
 import com.andigeeky.tripmate.models.Trip
+import com.andigeeky.tripmate.models.TripInput
 import com.andigeeky.tripmate.models.tripStorage
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import java.util.Random
 
 fun Route.tripRouting() {
     route("/") {
@@ -27,8 +29,15 @@ fun Route.tripRouting() {
         }
         post {
             try {
-                val trip = call.receive<Trip>()
-                tripStorage.add(trip)
+                val input = call.receive<TripInput>()
+                tripStorage.add(
+                    Trip(
+                        id = Random().nextInt().toString(),
+                        name = input.name,
+                        startDate = input.startDate,
+                        endDate = input.endDate
+                    )
+                )
                 call.respondText("Trip Created", status = HttpStatusCode.Created)
             } catch (exception: Exception) {
                 call.respondText(text = "${exception.message}")
