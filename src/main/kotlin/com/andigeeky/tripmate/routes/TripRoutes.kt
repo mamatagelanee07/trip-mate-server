@@ -8,6 +8,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.util.pipeline.*
 import java.util.Random
 
 fun Route.tripRouting() {
@@ -28,7 +29,7 @@ fun Route.tripRouting() {
             } ?: call.respondText("Missing or malformed id", status = HttpStatusCode.BadRequest)
         }
         post {
-            try {
+            errorAware {
                 val input = call.receive<TripInput>()
                 tripStorage.add(
                     Trip(
@@ -39,8 +40,6 @@ fun Route.tripRouting() {
                     )
                 )
                 call.respondText("Trip Created", status = HttpStatusCode.Created)
-            } catch (exception: Exception) {
-                call.respondText(text = "${exception.message}")
             }
         }
         delete("{id}") {
@@ -51,5 +50,18 @@ fun Route.tripRouting() {
                 else call.respondText("Trip with given id not found", status = HttpStatusCode.NotFound)
             } ?: call.respondText("Missing or malformed id", status = HttpStatusCode.BadRequest)
         }
+    }
+}
+
+private suspend fun <R> PipelineContext<*, ApplicationCall>.errorAware(block: suspend () -> R): R? {
+    return try {
+        block()
+    } catch (e: Exception) {
+        call.respondText(
+            """{"error":"$e"}""",
+            ContentType.parse("application/json"),
+            HttpStatusCode.InternalServerError
+        )
+        null
     }
 }

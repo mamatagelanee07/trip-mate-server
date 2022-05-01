@@ -3,7 +3,6 @@ package com.andigeeky.tripmate.models
 import kotlinx.serialization.Serializable
 
 val tripStorage = mutableListOf<Trip>()
-
 @Serializable
 data class Trip(
     val id: String,
